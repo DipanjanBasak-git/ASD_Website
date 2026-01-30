@@ -1,0 +1,81 @@
+.navbar {
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--muted);
+    background-color: var(--background);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.navContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    color: var(--primary);
+}
+
+.navLinks {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+    align-items: center;
+}
+
+.navLinks a {
+    font-size: 0.95rem;
+    color: var(--subtext);
+    transition: color 0.2s ease;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.navLinks a:hover {
+    color: var(--heading);
+}
+
+/* Active state helper */
+.activeLink {
+    color: var(--heading) !important;
+    border-bottom: 1px solid var(--accent);
+}
+
+.authLink {
+    font-size: 0.9rem;
+    color: var(--heading);
+    font-weight: 500;
+    border: 1px solid var(--border);
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    background: transparent;
+}
+
+.authLink:hover {
+    background-color: var(--muted);
+    color: var(--heading);
+    border-color: var(--primary);
+}
+
+.authLink {
+    font-size: 0.9rem;
+    color: var(--heading);
+    font-weight: 500;
+    border: 1px solid var(--border);
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    /* Reset line height for precise centering */
+    height: 40px;
+    /* Enforce height if needed for consistency */
+}

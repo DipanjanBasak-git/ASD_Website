@@ -1,0 +1,138 @@
+.researchPage {
+    min-height: 100vh;
+    padding-top: 8rem;
+    padding-bottom: 5rem;
+    background-color: var(--background);
+}
+
+.introSection {
+    margin-bottom: 4rem;
+}
+
+.heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.introText {
+    font-size: 1.15rem;
+    color: var(--body);
+    line-height: 1.7;
+    max-width: 800px;
+    margin-bottom: 3rem;
+}
+
+/* Grid Layout */
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
+    .gridContainer {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+/* Cards */
+.cardsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .cardsGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 992px) {
+        .cardsGrid {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+
+.card {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.cardIcon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.iconOne {
+    background-color: #EEF2C9;
+    color: #4A5D23;
+}
+
+.iconTwo {
+    background-color: #E0DDD5;
+    color: var(--heading);
+}
+
+.cardTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 0.5rem;
+}
+
+.cardText {
+    font-size: 0.95rem;
+    color: var(--subtext);
+    line-height: 1.5;
+}
+
+/* Side Panel */
+.sidePanel {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.citationCard {
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.citationCard h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 0.75rem;
+}
+
+.citationCard p {
+    font-size: 0.9rem;
+    color: var(--subtext);
+    line-height: 1.5;
+}

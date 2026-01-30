@@ -1,0 +1,45 @@
+.footer {
+    border-top: 1px solid var(--muted);
+    padding: 6rem 0 4rem;
+    /* Significantly increased top spacing */
+    margin-top: auto;
+    background-color: var(--background);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.disclaimerSection {
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.disclaimerText {
+    font-size: 0.95rem;
+    color: var(--body);
+    line-height: 1.7;
+}
+
+.disclaimerText strong {
+    color: var(--heading);
+    font-weight: 600;
+}
+
+.links {
+    display: flex;
+    gap: 2.5rem;
+    font-size: 0.9rem;
+    color: var(--subtext);
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.links a:hover {
+    text-decoration: underline;
+    color: var(--heading);
+}
