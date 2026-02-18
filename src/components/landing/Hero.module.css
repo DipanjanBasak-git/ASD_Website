@@ -1,6 +1,6 @@
 .hero {
-    padding: 8rem 0 6rem;
-    /* Increased top/bottom padding */
+    padding: 4rem 0 6rem;
+    /* Reduced top padding to lessen gap from navbar */
     background-color: var(--background);
     min-height: 85vh;
     display: flex;
