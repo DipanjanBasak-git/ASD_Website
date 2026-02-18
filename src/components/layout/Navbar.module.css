@@ -50,24 +50,8 @@
     color: var(--heading);
     font-weight: 500;
     border: 1px solid var(--border);
-    padding: 0.6rem 1.2rem;
-    border-radius: 20px;
-    transition: all 0.2s ease;
-    background: transparent;
-}
-
-.authLink:hover {
-    background-color: var(--muted);
-    color: var(--heading);
-    border-color: var(--primary);
-}
-
-.authLink {
-    font-size: 0.9rem;
-    color: var(--heading);
-    font-weight: 500;
-    border: 1px solid var(--border);
-    padding: 0.6rem 1.2rem;
+    padding: 0.55rem 1.2rem 0.65rem 1.2rem;
+    /* Slightly more padding on bottom to compensate for font baseline */
     border-radius: 20px;
     transition: all 0.2s ease;
     background: transparent;
@@ -75,7 +59,12 @@
     align-items: center;
     justify-content: center;
     line-height: 1;
-    /* Reset line height for precise centering */
     height: 40px;
-    /* Enforce height if needed for consistency */
+    text-decoration: none;
+}
+
+.authLink:hover {
+    background-color: var(--muted);
+    color: var(--heading);
+    border-color: var(--primary);
 }

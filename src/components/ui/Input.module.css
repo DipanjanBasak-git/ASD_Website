@@ -1,0 +1,44 @@
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--heading);
+}
+
+.input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    color: var(--body);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1);
+}
+
+.input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--subtext);
+}
+
+.error {
+    color: #ef4444;
+    /* Standard error red */
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}

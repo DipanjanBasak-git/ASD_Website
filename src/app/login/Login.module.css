@@ -30,6 +30,13 @@
     line-height: 1.5;
 }
 
+.formSpace {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+}
+
 .button {
     width: 100%;
     padding: 0.9rem 1.5rem;
@@ -41,7 +48,8 @@
     border: none;
     background-color: var(--primary);
     color: var(--background);
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
 }
 
 .button:hover:not(:disabled) {
@@ -67,13 +75,24 @@
 }
 
 .statusMessage {
-    margin-top: 1.5rem;
-    padding: 1rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
     background-color: rgba(0, 0, 0, 0.03);
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 0.9rem;
     color: var(--body);
     border: 1px solid var(--muted);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.errorMessage {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background-color: rgba(239, 68, 68, 0.1);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
     animation: fadeIn 0.3s ease-in-out;
 }
 

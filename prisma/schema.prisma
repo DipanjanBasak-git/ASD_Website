@@ -1,0 +1,303 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------------------------------
+// USER & ROLE MANAGEMENT
+// -----------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(uuid())
+  email         String?   @unique
+  phone         String?   @unique
+  passwordHash  String?
+  
+  // OTP Logic
+  otpCode         String?
+  otpExpiresAt    DateTime?
+  otpAttempts     Int       @default(0)
+  otpLockedUntil  DateTime?
+  
+  // Verification
+  isVerified         Boolean   @default(false)
+  verificationMethod String?   // 'email' or 'sms'
+  createdBy          String?   // Admin who created this account
+  approvedBy         String?   // Admin who approved clinical role
+
+  // Profile & Role
+  fullName      String?
+  roleId        String
+  role          Role      @relation(fields: [roleId], references: [id])
+  
+  institutionId String?
+  institution   Institution? @relation(fields: [institutionId], references: [id])
+
+  // Relations
+  guardianPatients   Patient[]   @relation("GuardianPatients") 
+  conductedScreenings Screening[] @relation("Evaluator")
+  uploadedMedia      ClinicalMedia[] @relation("Uploader")
+  auditLogs          AuditLog[]
+
+  // Status
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime? // Soft delete
+  deletedBy     String?   // ID of user who deleted
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique // ADMIN, DOCTOR, THERAPIST, COUNSELLOR, GUARDIAN
+  description String?
+  
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  key         String   @unique // e.g., "screening.write", "patient.read"
+  description String?
+  
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+}
+
+model Institution {
+  id        String   @id @default(uuid())
+  name      String
+  district  String?
+  state     String?
+  code      String   @unique // e.g. "WB-KOL-001"
+
+  users     User[]
+  patients  Patient[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// -----------------------------------------------------------------------------
+// PATIENT MANAGEMENT
+// -----------------------------------------------------------------------------
+
+model Patient {
+  id              String   @id @default(uuid())
+  patientUniqueId String   @unique // SMART-YYYY-XXXXXX (Indexed)
+  
+  firstName       String
+  lastName        String
+  dob             DateTime
+  gender          String
+  
+  // Guardian Info (Linked to User)
+  guardianId      String?
+  guardian        User?    @relation("GuardianPatients", fields: [guardianId], references: [id])
+  
+  // Hardened Guardian Details (Encrypted in App Layer)
+  guardianName    String
+  guardianPhone   String   // Encrypted
+  address         String?
+  
+  institutionId   String
+  institution     Institution @relation(fields: [institutionId], references: [id])
+
+  // Pipeline
+  pipelineStage   String   @default("REGISTRATION") // REGISTRATION, SCREENING, DIAGNOSIS, INTERVENTION
+  
+  // Clinical Relations
+  visits          Visit[]
+  screenings      Screening[]
+  riskFlags       RiskFlag[]
+  consents        Consent[]
+  therapies       TherapyRecord[]
+  prescriptions   Prescription[]
+
+  // Meta
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  deletedAt       DateTime? // Soft Delete
+  deletedBy       String?
+  
+  @@index([patientUniqueId])
+  @@index([firstName, lastName])
+  @@index([dob])
+}
+
+// -----------------------------------------------------------------------------
+// CLINICAL MODULES: SCREENING & DIAGNOSIS
+// -----------------------------------------------------------------------------
+
+model Screening {
+  id              String   @id @default(uuid())
+  
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  
+  toolName        String   // M-CHAT-R/F, CARS-2
+  toolVersion     String
+  scoringVersion  String
+  
+  rawResponse     Json     // JSONB Storage of answers
+  calculatedScore Int
+  riskLevel       String   // LOW, MEDIUM, HIGH
+  reviewStatus    String   @default("PENDING") // PENDING, REVIEWED, APPROVED
+  
+  evaluatorId     String
+  evaluator       User     @relation("Evaluator", fields: [evaluatorId], references: [id])
+  
+  visitId         String?
+  visit           Visit?   @relation(fields: [visitId], references: [id])
+
+  createdAt       DateTime @default(now())
+  
+  @@index([riskLevel])
+  @@index([toolName])
+}
+
+model RiskFlag {
+  id          String   @id @default(uuid())
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  
+  riskLevel   String   // HIGH, CIS
+  reason      String?
+  
+  isResolved  Boolean  @default(false)
+  resolvedAt  DateTime?
+  resolvedBy  String?
+  
+  flaggedAt   DateTime @default(now())
+}
+
+// -----------------------------------------------------------------------------
+// CORE CLINICAL RECORDS
+// -----------------------------------------------------------------------------
+
+model Visit {
+  id          String   @id @default(uuid())
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: Restrict)
+  
+  visitDate   DateTime @default(now())
+  type        String   // INITIAL, FOLLOWUP, THERAPY
+
+  // Relations
+  screenings  Screening[]
+  media       ClinicalMedia[]
+  therapy     TherapyRecord[]
+  
+  createdAt   DateTime @default(now())
+}
+
+model TherapyRecord {
+  id          String   @id @default(uuid())
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  visitId     String
+  visit       Visit    @relation(fields: [visitId], references: [id])
+  
+  notes       String   // Clinical observation
+  summary     String?  // Patient-visible summary
+  progress    String?
+  
+  therapistId String
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Prescription {
+  id          String   @id @default(uuid())
+  patientId   String
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  
+  details     String?
+  fileUrl     String?  // Secure Path
+  
+  prescribedBy String
+  validUntil   DateTime?
+  
+  createdAt   DateTime @default(now())
+}
+
+// -----------------------------------------------------------------------------
+// COMPLIANCE: CONSENT & MEDIA
+// -----------------------------------------------------------------------------
+
+model Consent {
+  id              String   @id @default(uuid())
+  patientId       String
+  patient         Patient  @relation(fields: [patientId], references: [id])
+  
+  consentVersion  String
+  contentHash     String   // Hash of the legal text agreed to
+  signatureHash   String   // Digital signature hash
+  ipAddress       String?
+  
+  grantedAt       DateTime @default(now())
+  revokedAt       DateTime?
+}
+
+model ClinicalMedia {
+  id              String   @id @default(uuid())
+  visitId         String
+  visit           Visit    @relation(fields: [visitId], references: [id])
+  
+  type            String   // IMAGE, VIDEO, AUDIO
+  filePath        String   // Encrypted path (S3/Local)
+  contentHash     String?  // For integrity check
+  isShareable     Boolean  @default(false)
+  
+  uploadedById    String
+  uploadedBy      User     @relation("Uploader", fields: [uploadedById], references: [id])
+  
+  createdAt       DateTime @default(now())
+}
+
+// -----------------------------------------------------------------------------
+// SYSTEM AUDIT
+// -----------------------------------------------------------------------------
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  action      String   // LOGIN, VIEW_PATIENT, EDIT_SCREENING
+  resource    String   // Table name
+  resourceId  String?  // Row ID
+  
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  
+  oldValues   Json?
+  newValues   Json?
+  
+  ipAddress   String?
+  userAgent   String?
+  
+  severity    String   @default("INFO") // INFO, WARN, CRITICAL
+  timestamp   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([timestamp])
+}
