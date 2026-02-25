@@ -8,7 +8,7 @@ export default function Hero() {
             <Container className={styles.heroContainer}>
                 <div className={styles.content}>
                     <h1 className={styles.title}>
-                        Supporting Early Understanding Through Play, Observation, and Responsible AI
+                        Advancing Early Autism Understanding Through Intelligent Support
                     </h1>
                     <p className={styles.subtitle}>
                         A research-driven platform designed to assist structured behavioral observation in young children.

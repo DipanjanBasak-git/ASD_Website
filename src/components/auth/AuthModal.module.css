@@ -1,0 +1,230 @@
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px;
+    overflow-y: auto;
+    opacity: 0;
+    animation: fadeInOverlay 0.2s ease forwards;
+}
+
+.modalContent {
+    width: 100%;
+    padding: 40px;
+    border-radius: 20px;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    margin: auto;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideUpModal 0.3s ease forwards;
+}
+
+.modalWide {
+    max-width: 780px;
+}
+
+.modalMedium {
+    max-width: 580px;
+}
+
+.formWrapper {
+    max-width: 460px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+
+
+.closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--subtext);
+    transition: color 0.2s;
+}
+
+.closeButton:hover {
+    color: var(--heading);
+}
+
+.title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--heading);
+}
+
+.subtitle {
+    color: var(--subtext);
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.formSpace {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+}
+
+.button {
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    background-color: var(--primary);
+    color: var(--background);
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.button:hover:not(:disabled) {
+    opacity: 0.92;
+    transform: translateY(-1px);
+}
+
+.button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: var(--subtext);
+    transform: none;
+}
+
+.helperText {
+    font-size: 0.85rem;
+    color: var(--subtext);
+    margin-top: 1rem;
+}
+
+.footer {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--muted);
+    font-size: 0.8rem;
+    color: var(--subtext);
+}
+
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpModal {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Role Selection Specific */
+.roleGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+}
+
+@media (max-width: 640px) {
+    .roleGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.roleBox {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.roleBox:hover {
+    border-color: var(--primary);
+    background: rgba(0, 0, 0, 0.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* For dark mode support if card is dark */
+@media (prefers-color-scheme: dark) {
+    .roleBox:hover {
+        background: rgba(255, 255, 255, 0.02);
+    }
+}
+
+.roleIcon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--muted);
+    border-radius: 8px;
+    font-size: 1.5rem;
+    /* For emoji fallback */
+}
+
+/* Default svg styling inside role icon */
+.roleIcon svg {
+    width: 24px;
+    height: 24px;
+    color: var(--primary);
+    fill: currentColor;
+}
+
+.roleContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.roleTitle {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--heading);
+    margin-bottom: 0.25rem;
+}
+
+.roleDesc {
+    font-size: 0.85rem;
+    color: var(--subtext);
+    line-height: 1.4;
+}

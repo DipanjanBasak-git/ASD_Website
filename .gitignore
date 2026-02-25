@@ -41,3 +41,19 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+# Machine Learning Data
+*.h5
+*.ipynb
+tfenv/
+test-eval.py
+test-inference.py
+test-model-raw.ts
+libtf.zip
+libtf_extracted/
+
+
+asd_savedmodel/
+model.h5
+asd_model.h5
+
