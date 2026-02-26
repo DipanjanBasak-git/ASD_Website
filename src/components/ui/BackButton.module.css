@@ -1,0 +1,46 @@
+/* BackButton.module.css — reusable back navigation button */
+
+.backBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    padding: 0.45rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.12s ease;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+}
+
+.backBtn:hover {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+    color: #111827;
+    transform: translateX(-2px);
+}
+
+.backBtn:active {
+    transform: translateX(0);
+    background: #e5e7eb;
+}
+
+/* Dark variant — for dashboards with colored headers */
+.backBtnDark {
+    border-color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.backBtnDark:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #fff;
+}

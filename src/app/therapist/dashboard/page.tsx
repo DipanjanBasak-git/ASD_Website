@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import styles from './Therapist.module.css';
 import classNames from 'classnames';
+import BackButton from '@/components/ui/BackButton';
 
 export default function TherapistDashboard() {
     const [patients, setPatients] = useState<any[]>([]);
@@ -59,7 +60,8 @@ export default function TherapistDashboard() {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Therapy Session Console</h1>
+                <BackButton label="← Home" href="/" />
+                <h1 className={styles.title} style={{ marginTop: '0.75rem' }}>Therapy Session Console</h1>
                 <p className={styles.subtitle}>Occupational Therapy & Intervention Log</p>
             </header>
 

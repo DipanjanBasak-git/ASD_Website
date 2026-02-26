@@ -81,9 +81,17 @@ export async function POST(req: NextRequest) {
         const model = await getModel();
 
         // Preprocess image to [1, 224, 224, 3] float32 tensor
+        // NOTE: pixels are raw [0-255] — the model's internal rescaling_1 layer
+        // handles the /255 normalization (scale=0.003921568 confirmed in model.json).
         inputTensor = await preprocessImage(buffer);
 
-        // Run inference; squeeze [1,1] → scalar, extract value
+        // ── Debug: verify input tensor range ──────────────────────────────────
+        const inputMin = inputTensor.min().dataSync()[0];
+        const inputMax = inputTensor.max().dataSync()[0];
+        console.log(`[Screening API] Input tensor range: min=${inputMin.toFixed(2)}, max=${inputMax.toFixed(2)}`);
+        // Expected: min~0, max~255 (raw pixel values)
+
+        // Run inference; output shape is [1,1] with sigmoid activation
         const predTensor = model.predict(inputTensor) as tf.Tensor;
         const scoreArr = await predTensor.data();
         score = scoreArr[0];
@@ -99,12 +107,25 @@ export async function POST(req: NextRequest) {
     }
 
     // ── 7. Classify and respond ───────────────────────────────────────────────
-    // From training notebook: {'ASD': 0, 'Non-ASD': 1}
-    // So raw score = 0 means ASD, raw score = 1 means Non-ASD
-    const probASD = 1.0 - score;
+    // Training class mapping (flow_from_directory alphabetical order):
+    //   {'ASD': 0, 'Non-ASD': 1}
+    // Model has sigmoid output (binary_crossentropy loss):
+    //   raw score → 0 means ASD (class 0)
+    //   raw score → 1 means Non-ASD (class 1)
+    const probNonASD = score;         // raw sigmoid output = P(Non-ASD)
+    const probASD = 1.0 - score;   // P(ASD) = 1 - P(Non-ASD)
+    const predictedClassIndex = score >= 0.5 ? 1 : 0; // 1=Non-ASD, 0=ASD
+
+    // ── Debug: log both class probabilities ───────────────────────────────────
+    console.log(`[Screening API] Raw sigmoid score (P(Non-ASD)): ${probNonASD.toFixed(4)}`);
+    console.log(`[Screening API] P(ASD):    ${(probASD * 100).toFixed(1)}%`);
+    console.log(`[Screening API] P(Non-ASD): ${(probNonASD * 100).toFixed(1)}%`);
+    console.log(`[Screening API] Predicted class index: ${predictedClassIndex} (0=ASD, 1=Non-ASD)`);
 
     const isPositive = probASD >= 0.50;
     const prediction = isPositive ? 'ASD Positive' : 'ASD Negative';
+    const displayConfidence = isPositive ? probASD * 100 : probNonASD * 100;
+    console.log(`[Screening API] Final prediction: ${prediction} (confidence: ${displayConfidence.toFixed(1)}%)`);
 
     return NextResponse.json({
         score: Math.round(probASD * 1000) / 1000,

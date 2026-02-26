@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import styles from './Doctor.module.css';
 import classNames from 'classnames';
+import BackButton from '@/components/ui/BackButton';
 
 interface Patient {
     id: string;
@@ -41,14 +42,14 @@ export default function DoctorDashboard() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <div>
-                    <h1 className={styles.title}>Clinical Review Dashboard</h1>
+                    <BackButton label="← Home" href="/" />
+                    <h1 className={styles.title} style={{ marginTop: '0.75rem' }}>Clinical Review Dashboard</h1>
                     <p className={styles.subtitle}>
                         Pending Review: <strong>{stats.pending}</strong> | High Risk Alerts: <strong className="text-red-600">{stats.highRisk}</strong>
                     </p>
                 </div>
                 <div className={styles.actions}>
                     <button className={styles.refreshBtn} onClick={() => window.location.reload()}>Refresh List</button>
-                    {/* <button className="bg-blue-600 text-white px-4 py-2 rounded">New Assessment</button> */}
                 </div>
             </header>
 

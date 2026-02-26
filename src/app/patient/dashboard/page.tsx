@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Container from '@/components/ui/Container';
 import Link from 'next/link';
+import BackButton from '@/components/ui/BackButton';
 
 type DashboardData = {
     profile: {
@@ -44,16 +45,28 @@ export default function PatientDashboard() {
 
     return (
         <Container>
-            <div style={{ padding: '4rem 0' }}>
-                <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
-                    <div>
-                        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Verify ASD Patient Portal</h1>
-                        <p style={{ color: '#666' }}>Secure Dashboard for <strong>{data.profile.name}</strong></p>
-                    </div>
+            <div style={{ padding: '2.5rem 0 4rem' }}>
+                {/* ── Top nav: back + patient id ──────────────────────────────── */}
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '1.75rem',
+                    flexWrap: 'wrap',
+                    gap: '0.75rem',
+                }}>
+                    <BackButton label="← Home" href="/" />
                     <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontWeight: 'bold', color: 'var(--primary)' }}>ID: {data.profile.id}</div>
-                        <div style={{ fontSize: '0.9rem', color: '#888' }}>{data.profile.institution}</div>
+                        <div style={{ fontWeight: 'bold', color: 'var(--primary)', fontSize: '0.9rem' }}>
+                            ID: {data.profile.id}
+                        </div>
+                        <div style={{ fontSize: '0.82rem', color: '#888' }}>{data.profile.institution}</div>
                     </div>
+                </div>
+
+                <header style={{ marginBottom: '3rem' }}>
+                    <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Verify ASD Patient Portal</h1>
+                    <p style={{ color: '#666' }}>Secure Dashboard for <strong>{data.profile.name}</strong></p>
                 </header>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>

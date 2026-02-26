@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Input from '@/components/ui/Input';
 import styles from './Counsellor.module.css';
+import BackButton from '@/components/ui/BackButton';
 
 export default function CounsellorDashboard() {
     const [formData, setFormData] = useState({
@@ -50,7 +51,8 @@ export default function CounsellorDashboard() {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Counsellor Dashboard</h1>
+                <BackButton label="← Home" href="/" />
+                <h1 className={styles.title} style={{ marginTop: '0.75rem' }}>Counsellor Dashboard</h1>
                 <p className={styles.subtitle}>Patient Intake & Registration</p>
             </header>
 
