@@ -11,9 +11,8 @@
 
 .heroContainer {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    /* Increased gap */
+    grid-template-columns: 1fr 1.15fr;
+    gap: 3.5rem;
     align-items: center;
     position: relative;
     z-index: 10;
@@ -138,76 +137,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-
-    33% {
-        transform: translateY(-18px) rotate(1.5deg);
-    }
-
-    66% {
-        transform: translateY(-8px) rotate(-1deg);
-    }
-}
-
-@keyframes morphBlob {
-
-    0%,
-    100% {
-        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-    }
-
-    20% {
-        border-radius: 55% 45% 40% 60% / 60% 35% 65% 40%;
-    }
-
-    40% {
-        border-radius: 35% 65% 55% 45% / 50% 60% 40% 55%;
-    }
-
-    60% {
-        border-radius: 60% 40% 30% 70% / 45% 65% 35% 60%;
-    }
-
-    80% {
-        border-radius: 45% 55% 65% 35% / 55% 40% 60% 45%;
-    }
-}
-
-@keyframes glowPulse {
-
-    0%,
-    100% {
-        box-shadow:
-            0 20px 60px rgba(85, 107, 47, 0.15),
-            0 0 0 0 rgba(212, 225, 87, 0),
-            inset 0 0 30px rgba(255, 255, 255, 0.6);
-    }
-
-    50% {
-        box-shadow:
-            0 30px 80px rgba(85, 107, 47, 0.28),
-            0 0 60px 10px rgba(212, 225, 87, 0.12),
-            inset 0 0 40px rgba(255, 255, 255, 0.85);
-    }
-}
-
-.softShape {
     width: 100%;
-    aspect-ratio: 1;
-    max-width: 420px;
-    background: radial-gradient(circle at 30% 30%, #EEF2C9, #D4E157 55%, #b8cc2a);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    animation:
-        float 7s ease-in-out infinite,
-        morphBlob 12s ease-in-out infinite,
-        glowPulse 5s ease-in-out infinite;
-    backdrop-filter: blur(10px);
-    will-change: transform, border-radius, box-shadow;
 }
+
+.videoWrapper {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.heroVideo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 880 / 720;
+    object-fit: contain;
+    display: block;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    user-select: none;
+}

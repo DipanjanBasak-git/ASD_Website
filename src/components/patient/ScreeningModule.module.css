@@ -646,3 +646,488 @@
         justify-content: center;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NEW: STEP-BASED SCREENING FORM STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Step section wrapper ─────────────────────────────────────────────── */
+.stepSection {
+    margin-bottom: 2rem;
+    border: 1.5px solid #e8eaf0;
+    border-radius: 14px;
+    padding: 1.5rem;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+.stepHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-bottom: 1.25rem;
+}
+
+.stepBadge {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f1f3f9;
+    border: 2px solid #d1d5db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #6b7280;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.stepBadgeDone {
+    background: #d1fae5;
+    border-color: #6ee7b7;
+    color: #059669;
+}
+
+.stepTitle {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1f36;
+    margin-bottom: 0.15rem;
+}
+
+.stepDesc {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+/* ── Questionnaire grid ───────────────────────────────────────────────── */
+.questionnaireGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+/* ── Individual question item ─────────────────────────────────────────── */
+.questionItem {
+    background: #f9fafb;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 11px;
+    padding: 0.9rem 1rem;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.questionItemDone {
+    border-color: #6ee7b7;
+    background: #f0fdf4;
+}
+
+.questionItemError {
+    border-color: #fca5a5;
+    background: #fff5f5;
+}
+
+.questionLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #374151;
+    margin-bottom: 0.6rem;
+    cursor: default;
+}
+
+.questionHint {
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: #9ca3af;
+    line-height: 1.4;
+}
+
+/* ── Y/N toggle buttons ───────────────────────────────────────────────── */
+.ynGroup {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.ynBtn {
+    flex: 1;
+    padding: 0.45rem 0;
+    border-radius: 8px;
+    border: 1.5px solid #d1d5db;
+    background: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.ynBtn:hover {
+    border-color: #9ca3af;
+    background: #f3f4f6;
+}
+
+.ynBtnActive {
+    background: #1a1f36;
+    border-color: #1a1f36;
+    color: #fff;
+}
+
+/* ── Select / Input ───────────────────────────────────────────────────── */
+.questionSelect,
+.questionInput {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1.5px solid #d1d5db;
+    background: #fff;
+    font-size: 0.88rem;
+    color: #374151;
+    font-family: inherit;
+    transition: border-color 0.15s;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.questionSelect:focus,
+.questionInput:focus {
+    border-color: #3b5bdb;
+    box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.1);
+}
+
+/* ── Field error ──────────────────────────────────────────────────────── */
+.fieldError {
+    font-size: 0.72rem;
+    color: #c53030;
+    font-weight: 600;
+    margin-top: 0.35rem;
+}
+
+/* ── Form incomplete hint ─────────────────────────────────────────────── */
+.formIncompleteHint {
+    text-align: center;
+    font-size: 0.78rem;
+    color: #9ca3af;
+    margin-top: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NEW: DUAL-MODEL RESULT DISPLAY
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Results grid (two cards side-by-side, then combined full-width) ─── */
+.resultsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    animation: fadeSlideIn 0.35s ease both;
+}
+
+/* ── Individual result cards ──────────────────────────────────────────── */
+.resultCard {
+    border-radius: 14px;
+    padding: 1.4rem;
+    border: 1.5px solid transparent;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.resultCardPositive {
+    background: linear-gradient(160deg, #fff5f5 0%, #fff 100%);
+    border-color: #fca5a5;
+}
+
+.resultCardNegative {
+    background: linear-gradient(160deg, #f0fff4 0%, #fff 100%);
+    border-color: #6ee7b7;
+}
+
+.resultCardQuestionnaire {
+    background: linear-gradient(160deg, #faf5ff 0%, #fff 100%);
+    border-color: #c4b5fd;
+}
+
+.resultCardHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.resultCardIcon {
+    flex-shrink: 0;
+}
+
+.resultCardTitle {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1a1f36;
+    line-height: 1.2;
+}
+
+.resultCardModel {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    font-weight: 500;
+    margin-top: 0.1rem;
+}
+
+.resultCardBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+/* ── Metric row ───────────────────────────────────────────────────────── */
+.resultMetric {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.metricLabel {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9ca3af;
+}
+
+.metricValue {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #1a1f36;
+    font-variant-numeric: tabular-nums;
+}
+
+.metricBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.badgeQuestionnaire {
+    background: #ede9fe;
+    color: #6d28d9;
+    border: 1px solid #c4b5fd;
+}
+
+/* ── Probability grid (questionnaire card) ────────────────────────────── */
+.probGrid {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.probItem {
+    display: grid;
+    grid-template-columns: 60px 1fr 36px;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.probLabel {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.probBar {
+    height: 6px;
+    background: #e8eaf0;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.probFill {
+    height: 100%;
+    background: linear-gradient(90deg, #8b5cf6, #6d28d9);
+    border-radius: 999px;
+    transition: width 0.7s ease;
+}
+
+.probVal {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #6b7280;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.modelNote {
+    font-size: 0.68rem;
+    color: #9ca3af;
+    font-style: italic;
+    margin-top: 0.25rem;
+}
+
+/* ── Combined result card (full width) ───────────────────────────────── */
+.combinedCard {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #eff6ff 0%, #fff 60%);
+    border: 1.5px solid #93c5fd;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(30, 64, 175, 0.1);
+}
+
+.combinedHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.85rem;
+}
+
+.combinedTitle {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1e40af;
+}
+
+.combinedAssessment {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #1a1f36;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.combinedConfidence {
+    font-size: 0.82rem;
+    color: #6b7280;
+    margin-bottom: 0.85rem;
+}
+
+.combinedSummary {
+    font-size: 0.85rem;
+    color: #374151;
+    line-height: 1.65;
+    margin: 0 0 1rem;
+}
+
+/* ── Responsive: result grid ──────────────────────────────────────────── */
+@media (max-width: 580px) {
+    .resultsGrid {
+        grid-template-columns: 1fr;
+    }
+    .combinedCard {
+        grid-column: 1;
+    }
+    .questionnaireGrid {
+        grid-template-columns: 1fr;
+    }
+    .stepSection {
+        padding: 1.1rem;
+    }
+}
+
+/* ── 40/60 Weighted Combination Badges & Additions ── */
+.weightBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: #e0e7ff;
+    color: #3730a3;
+    margin-left: 0.4rem;
+}
+
+.weightBadgeQuestionnaire {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.contributionBox {
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    margin-top: 0.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contributionLabel {
+    font-size: 0.75rem;
+    color: #4b5563;
+    font-weight: 600;
+}
+
+.contributionValue {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #111827;
+}
+
+.formulaBox {
+    background: #eff6ff;
+    border: 1px dashed #60a5fa;
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem;
+    margin: 0.75rem 0;
+    font-size: 0.82rem;
+    color: #1e40af;
+    font-weight: 600;
+    text-align: center;
+}
+
+.previewThumbWrap {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.previewThumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #e5e7eb;
+}
+
+.riskBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.riskBadgeHigh {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #f87171;
+}
+
+.riskBadgeMed {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fbbf24;
+}
+
+.riskBadgeLow {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #34d399;
+}

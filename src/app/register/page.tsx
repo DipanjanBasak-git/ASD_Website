@@ -94,9 +94,8 @@ export default function RegisterPage() {
                             <RegisterForm
                                 role={selectedRole}
                                 onBackToRoles={() => setStep('ROLE_SELECTION')}
-                                onSuccess={(email) => {
-                                    setRegisteredEmail(email);
-                                    setStep('OTP_FORM');
+                                onSuccess={(_email) => {
+                                    router.push('/login?registered=true');
                                 }}
                             />
                         </div>

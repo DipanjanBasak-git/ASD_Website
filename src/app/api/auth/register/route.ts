@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         // Hash password
         const passwordHash = await hashPassword(data.password);
 
-        // Create user (unverified)
+        // Create user (auto-verified for direct access)
         const user = await prisma.user.create({
             data: {
                 email: data.email,
@@ -57,12 +57,12 @@ export async function POST(req: NextRequest) {
                 fullName: data.fullName,
                 roleId: role.id,
                 passwordHash,
-                isVerified: false,
+                isVerified: true, // Auto-verified for instant access
                 verificationMethod: 'email',
-                isActive: true // Auto-activate everyone as per requirement
+                isActive: true // Auto-activate everyone
             }
         });
-        console.log(`[Register] User created: ${user.id}`);
+        console.log(`[Register] User created and auto-verified: ${user.id}`);
 
         // If patient, create patient record
         if (data.role === 'PATIENT' && data.dob && data.guardianName) {
@@ -91,13 +91,19 @@ export async function POST(req: NextRequest) {
             console.log(`[Register] Patient record created: ${patientUniqueId}`);
         }
 
-        // Generate OTP
-        const otp = await generateOTP(data.email);
-        console.log(`[Register] OTP generated for ${data.email}: ${otp}`);
+        /*
+        // OTP Generation (Bypassed temporarily for instant registration)
+        try {
+            const otp = await generateOTP(data.email);
+            console.log(`[Register] OTP generated for ${data.email}: ${otp}`);
+        } catch (emailError: any) {
+            console.warn(`[Register] ⚠️ OTP email failed (non-fatal): ${emailError?.message}`);
+        }
+        */
 
         return NextResponse.json({
             success: true,
-            message: "Registration successful. Please check your email for verification code.",
+            message: "Registration successful. You can now log in.",
             email: data.email
         });
 
@@ -105,7 +111,7 @@ export async function POST(req: NextRequest) {
         console.error("Registration Error:", error);
 
         if (error instanceof z.ZodError) {
-            return NextResponse.json({ error: error.errors[0].message }, { status: 400 });
+            return NextResponse.json({ error: error.issues?.[0]?.message ?? error.message }, { status: 400 });
         }
 
         return NextResponse.json({

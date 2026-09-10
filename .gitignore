@@ -57,3 +57,24 @@ asd_savedmodel/
 model.h5
 asd_model.h5
 
+# Test videos and outputs
+test_avc1.mp4
+test_h264.mp4
+test_out.mp4
+
+# Conversion/test scripts
+convert_model.py
+convert_model_direct.py
+convert_via_keras3.py
+test-create-user.js
+test-registration.js
+test-output.txt
+test_batch.py
+prisma.config.ts.bak
+
+# Uploads
+uploads/
+
+# Backup env
+.env.backup
+

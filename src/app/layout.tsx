@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 };
 
 import { AuthProvider } from "@/context/AuthContext";
+import { LanguageProvider } from "@/context/LanguageContext";
+import LanguageSelectorModal from "@/components/ui/LanguageSelectorModal";
 
 export default function RootLayout({
   children,
@@ -26,13 +28,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable}`}>
         <AuthProvider>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <LanguageProvider>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+            </div>
+            <LanguageSelectorModal />
+          </LanguageProvider>
         </AuthProvider>
       </body>
     </html>

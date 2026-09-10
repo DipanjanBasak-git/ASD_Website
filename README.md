@@ -298,34 +298,60 @@ This follows standard dashboard UX patterns and reduces visual clutter.
 
 ## 9. Running Locally
 
-### Prerequisites
+### Option A: ⚡ 1-Click Startup (Recommended)
 
-- Node.js 18+
-- PostgreSQL database running
-- Python 3.11+ with TensorFlow (for batch testing only)
-
-### Install and start
-
+Double-click the **`start.bat`** file in the project root (or run `.\start.bat` in PowerShell):
 ```powershell
-npm install
+.\start.bat
+```
+This automatically launches:
+1. **Python Questionnaire ML Inference Microservice** on `http://127.0.0.1:5001`
+2. **Next.js Web Application** on `http://localhost:3000`
+
+---
+
+### Option B: 🛠️ Manual Terminal Commands
+
+If you prefer running services in separate terminals:
+
+#### **Terminal 1: Start Python Questionnaire Model Server (Port 5001)**
+```powershell
+.\tfenv\Scripts\python.exe python_inference\app.py
+```
+> Keep this terminal open. Health check endpoint: `http://127.0.0.1:5001/health`
+
+#### **Terminal 2: Start Next.js Web App (Port 3000)**
+```powershell
 npm run dev
 ```
+> Keep this terminal open. Web app endpoint: `http://localhost:3000`
 
-App runs at `http://localhost:3000`.
+---
 
-### Python virtual environment (for ML testing)
+### 🗄️ Database (PostgreSQL)
 
+PostgreSQL runs automatically as a Windows service on startup. If it is ever stopped:
 ```powershell
-.\tfenv\Scripts\activate
-python test_batch.py
+net start postgresql-x64-16
 ```
 
-### Database
-
+To sync database schema or reset:
 ```powershell
-npx prisma migrate dev   # apply migrations
-npx prisma db seed       # seed default roles
+npx prisma db push       # apply schema changes
+npx prisma db seed       # seed initial roles/data
 ```
+
+---
+
+### 🌐 Key Service Endpoints
+
+| Service / Page | URL | Description |
+|---|---|---|
+| **Website & Dashboard** | `http://localhost:3000` | Main patient & clinician portal |
+| **Registration** | `http://localhost:3000/register` | Patient / Clinician registration |
+| **Login** | `http://localhost:3000/login` | Authentication portal |
+| **Dual-Model Screening** | `http://localhost:3000/screening` | Facial + Questionnaire ASD screening |
+| **Python ML Service** | `http://127.0.0.1:5001/health` | Model health & status |
 
 ---
 

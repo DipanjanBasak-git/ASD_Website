@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import Input from '@/components/ui/Input';
 import styles from './AuthModal.module.css';
 import { useAuth } from '@/context/AuthContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface LoginFormProps {
     onSwitchToRegister: () => void;
@@ -17,6 +18,7 @@ export default function LoginForm({ onSwitchToRegister, onSuccess }: LoginFormPr
     const [error, setError] = useState<string | null>(null);
 
     const { refreshUser } = useAuth();
+    const { t, triggerPostLoginModal } = useLanguage();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -39,8 +41,11 @@ export default function LoginForm({ onSwitchToRegister, onSuccess }: LoginFormPr
             // Refresh auth state before redirecting
             await refreshUser();
 
-            // Call success handler to close modal BEFORE redirecting
+            // Call success handler to close auth modal
             onSuccess();
+
+            // Trigger language selection modal after login
+            triggerPostLoginModal();
 
             // Redirect to role-specific dashboard
             router.push(data.redirectUrl);
@@ -54,8 +59,8 @@ export default function LoginForm({ onSwitchToRegister, onSuccess }: LoginFormPr
 
     return (
         <>
-            <h1 className={styles.title}>Login</h1>
-            <p className={styles.subtitle}>Please sign in with your credentials</p>
+            <h1 className={styles.title}>{t.auth.loginTitle}</h1>
+            <p className={styles.subtitle}>{t.auth.loginSubtitle}</p>
 
             {error && (
                 <div style={{
@@ -72,9 +77,9 @@ export default function LoginForm({ onSwitchToRegister, onSuccess }: LoginFormPr
 
             <form onSubmit={handleLogin} className={styles.formSpace}>
                 <Input
-                    label="Email"
+                    label={t.auth.emailLabel}
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={t.auth.emailPlaceholder}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -82,9 +87,9 @@ export default function LoginForm({ onSwitchToRegister, onSuccess }: LoginFormPr
                 />
 
                 <Input
-                    label="Password"
+                    label={t.auth.passwordLabel}
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder={t.auth.passwordPlaceholder}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -96,30 +101,30 @@ export default function LoginForm({ onSwitchToRegister, onSuccess }: LoginFormPr
                     disabled={isLoading}
                     className={styles.button}
                 >
-                    {isLoading ? 'Signing in...' : 'Sign In'}
+                    {isLoading ? t.auth.signingInBtn : t.auth.signInBtn}
                 </button>
             </form>
 
             <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
                 <p className={styles.helperText}>
-                    New user?{' '}
+                    {t.auth.newUserPrompt}{' '}
                     <button
                         type="button"
                         onClick={onSwitchToRegister}
                         style={{ background: 'none', border: 'none', color: 'var(--primary)', textDecoration: 'underline', cursor: 'pointer', padding: 0 }}
                     >
-                        Register
+                        {t.auth.registerLink}
                     </button>
                 </p>
                 <p className={styles.helperText} style={{ marginTop: '0.5rem' }}>
-                    <a href="/forgot-password" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>Forgot Password?</a>
+                    <a href="/forgot-password" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>{t.auth.forgotPasswordLink}</a>
                 </p>
             </div>
 
             <div className={styles.footer}>
-                <p style={{ fontSize: '0.75rem', color: '#999', margin: 0 }}>Restricted to authorized personnel only.</p>
+                <p style={{ fontSize: '0.75rem', color: '#999', margin: 0 }}>{t.auth.restrictedNotice}</p>
                 <p style={{ marginTop: '0.25rem', fontSize: '0.75rem', color: '#999', marginBottom: 0 }}>
-                    Contact at : <a href="mailto:smartasdplatform@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>smartasdplatform@gmail.com</a>
+                    {t.auth.contactAt} <a href="mailto:smartasdplatform@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>smartasdplatform@gmail.com</a>
                 </p>
             </div>
         </>

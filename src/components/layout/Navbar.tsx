@@ -8,9 +8,14 @@ import styles from './Navbar.module.css';
 import { useAuth } from '@/context/AuthContext';
 import AuthModal, { AuthModalState } from '@/components/auth/AuthModal';
 
+import LanguageSwitcher from './LanguageSwitcher';
+
+import { useLanguage } from '@/context/LanguageContext';
+
 export default function Navbar() {
     const pathname = usePathname();
     const { user, logout, isLoading } = useAuth();
+    const { t } = useLanguage();
     const isAuthPage = ['/login', '/register', '/forgot-password'].some(p => pathname?.startsWith(p));
 
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -73,10 +78,12 @@ export default function Navbar() {
                     {/* Nav links + profile */}
                     <div className={styles.rightSection}>
                         <ul className={styles.navLinks}>
-                            <li><Link href="/">Home</Link></li>
-                            <li><Link href="/about">About</Link></li>
-                            <li><Link href="/research">Research</Link></li>
+                            <li><Link href="/">{t.nav.home}</Link></li>
+                            <li><Link href="/about">{t.nav.about}</Link></li>
+                            <li><Link href="/research">{t.nav.research}</Link></li>
                         </ul>
+
+                        <LanguageSwitcher />
 
                         {!isLoading && (
                             user ? (
@@ -117,7 +124,7 @@ export default function Navbar() {
                                                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
                                                     <path d="M1.5 7.5L7.5 1.5L13.5 7.5M2.5 6.5V12.5C2.5 13.05 2.95 13.5 3.5 13.5H6V9.5H9V13.5H11.5C12.05 13.5 12.5 13.05 12.5 12.5V6.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                                                 </svg>
-                                                Dashboard
+                                                {t.nav.dashboard}
                                             </Link>
                                             <div className={styles.dropdownDivider} />
                                             <button
@@ -128,7 +135,7 @@ export default function Navbar() {
                                                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
                                                     <path d="M10 1H13.5C13.78 1 14 1.22 14 1.5V13.5C14 13.78 13.78 14 13.5 14H10M6 10.5L9.5 7M9.5 7L6 3.5M9.5 7H1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                                                 </svg>
-                                                Sign Out
+                                                {t.nav.signOut}
                                             </button>
                                         </div>
                                     )}
@@ -136,8 +143,8 @@ export default function Navbar() {
                             ) : (
                                 /* ── Auth buttons ─────────────────────────────── */
                                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                                    <button onClick={openLoginModal} className={styles.authLink}>Login</button>
-                                    <button onClick={openRegisterModal} className={styles.registerBtn}>Register</button>
+                                    <button onClick={openLoginModal} className={styles.authLink}>{t.nav.login}</button>
+                                    <button onClick={openRegisterModal} className={styles.registerBtn}>{t.nav.register}</button>
                                 </div>
                             )
                         )}

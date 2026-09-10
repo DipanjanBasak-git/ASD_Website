@@ -27,6 +27,8 @@ export async function generateOTP(email: string, type: OTPType = 'registration')
         }
     });
 
+    console.log(`\n========================================\n🔑 [OTP CODE] Verification Code for ${email}: ${otp}\n========================================\n`);
+
     // Send email with appropriate template
     try {
         const template = type === 'registration'

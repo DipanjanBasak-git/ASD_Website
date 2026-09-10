@@ -1,0 +1,333 @@
+.container {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    margin-top: 2rem;
+}
+
+.titleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.searchBox {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+}
+
+.input {
+    flex: 1;
+    min-width: 260px;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+}
+
+.input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.btn {
+    padding: 0.7rem 1.4rem;
+    background: #0f172a;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.btn:hover:not(:disabled) {
+    background: #1e293b;
+}
+
+.btn:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+.deniedBox {
+    background: #fffbeb;
+    border: 1.5px solid #fde68a;
+    border-radius: 10px;
+    padding: 1.25rem;
+    color: #92400e;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.patientCard {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.patientName {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.patientMeta {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.35rem;
+    font-size: 0.85rem;
+    color: #475569;
+    flex-wrap: wrap;
+}
+
+.idBadge {
+    padding: 0.35rem 0.85rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1d4ed8;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: monospace;
+}
+
+.accordionSection {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.accordionHeader {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: #f8fafc;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s;
+}
+
+.accordionHeader:hover {
+    background: #f1f5f9;
+}
+
+.accordionTitle {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.accordionBadge {
+    padding: 0.2rem 0.6rem;
+    background: #e2e8f0;
+    color: #334155;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.accordionContent {
+    padding: 1.25rem;
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.screeningItem {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.25rem;
+    background: #ffffff;
+}
+
+.screeningTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.scorePill {
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+.scoreHigh {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.scoreMed {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.scoreLow {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.gridTwo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 680px) {
+    .gridTwo {
+        grid-template-columns: 1fr;
+    }
+}
+
+.cardInner {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.cardInnerTitle {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.facialPreviewImg {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #cbd5e1;
+    margin-right: 1rem;
+}
+
+.qaTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-top: 0.5rem;
+}
+
+.qaTable th,
+.qaTable td {
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: left;
+}
+
+.qaTable th {
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 700;
+}
+
+.rxCard {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.25rem;
+    background: #ffffff;
+    margin-bottom: 0.75rem;
+}
+
+.rxHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.rxTitle {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #0f172a;
+}
+
+.docLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.docLink:hover {
+    background: #dbeafe;
+}
+
+.medsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.medItem {
+    padding: 0.6rem 0.75rem;
+    background: #f8fafc;
+    border-radius: 6px;
+    border-left: 3px solid #2563eb;
+    font-size: 0.85rem;
+}

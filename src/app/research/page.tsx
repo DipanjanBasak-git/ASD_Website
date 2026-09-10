@@ -1,21 +1,22 @@
+'use client';
+
 import Container from '@/components/ui/Container';
 import styles from './page.module.css';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ResearchPage() {
+    const { t } = useLanguage();
+
     return (
         <section className={styles.researchPage}>
             <Container>
-
                 {/* Intro Section */}
                 <div className={styles.introSection}>
                     <h1 className={styles.heading}>
-                        Research & Methodology
+                        {t.researchPage.heading}
                     </h1>
                     <p className={styles.introText}>
-                        This platform relies on a structured, multi-modal observation framework
-                        designed to capture natural behavioral indicators in early childhood.
-                        Our methodology prioritizes non-intrusive data collection and
-                        clinician-led interpretation.
+                        {t.researchPage.introText}
                     </p>
                 </div>
 
@@ -24,16 +25,16 @@ export default function ResearchPage() {
                     <div className={styles.cardsGrid}>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.iconOne}`}>1</div>
-                            <h3 className={styles.cardTitle}>Methodology Overview</h3>
+                            <h3 className={styles.cardTitle}>{t.researchPage.card1Title}</h3>
                             <p className={styles.cardText}>
-                                Structured protocols for recording social attention and joint engagement.
+                                {t.researchPage.card1Text}
                             </p>
                         </div>
                         <div className={styles.card}>
                             <div className={`${styles.cardIcon} ${styles.iconTwo}`}>2</div>
-                            <h3 className={styles.cardTitle}>Observation Framework</h3>
+                            <h3 className={styles.cardTitle}>{t.researchPage.card2Title}</h3>
                             <p className={styles.cardText}>
-                                Key behavioral markers aligned with clinical diagnostic criteria.
+                                {t.researchPage.card2Text}
                             </p>
                         </div>
                     </div>
@@ -41,21 +42,21 @@ export default function ResearchPage() {
                     {/* Dark Contextual Panel & Side Content */}
                     <div className={styles.sidePanel}>
                         <div className="research-card-global">
-                            <h3>Ethics & Data Handling</h3>
+                            <h3>{t.researchPage.ethicsTitle}</h3>
                             <ul>
-                                <li><strong>Local-First Processing:</strong> Data remains on the device whenever possible.</li>
-                                <li><strong>Anonymized Metrics:</strong> No PII is stored with behavioral metadata.</li>
-                                <li><strong>Clinician Access Only:</strong> Raw data is restricted to authorized personnel.</li>
+                                <li><strong>{t.researchPage.ethicsItem1Title}</strong> {t.researchPage.ethicsItem1Text}</li>
+                                <li><strong>{t.researchPage.ethicsItem2Title}</strong> {t.researchPage.ethicsItem2Text}</li>
+                                <li><strong>{t.researchPage.ethicsItem3Title}</strong> {t.researchPage.ethicsItem3Text}</li>
                             </ul>
                             <span className="note">
-                                This platform adheres to strict distinct ethical guidelines for pediatric behavioral observation.
+                                {t.researchPage.ethicsNote}
                             </span>
                         </div>
 
                         <div className={styles.citationCard}>
-                            <h3>Detailed Publication Data</h3>
+                            <h3>{t.researchPage.citationTitle}</h3>
                             <p>
-                                Full citations and peer-reviewed sources for the framework will be listed here upen release.
+                                {t.researchPage.citationText}
                             </p>
                         </div>
                     </div>

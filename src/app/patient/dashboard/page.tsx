@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Container from '@/components/ui/Container';
 import Link from 'next/link';
 import BackButton from '@/components/ui/BackButton';
+import PrescriptionSection from '@/components/patient/PrescriptionSection';
+import { useLanguage } from '@/context/LanguageContext';
 
 type DashboardData = {
     profile: {
@@ -18,6 +20,7 @@ type DashboardData = {
 };
 
 export default function PatientDashboard() {
+    const { t } = useLanguage();
     const [data, setData] = useState<DashboardData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -30,16 +33,16 @@ export default function PatientDashboard() {
                 const json = await res.json();
                 setData(json);
             } catch (err) {
-                setError('Could not load your dashboard. Please try logging in again.');
+                setError(t.patientDashboard.loadError);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, []);
+    }, [t.patientDashboard.loadError]);
 
-    if (loading) return <Container><div style={{ padding: '4rem 0', textAlign: 'center' }}>Loading your secure portal...</div></Container>;
+    if (loading) return <Container><div style={{ padding: '4rem 0', textAlign: 'center' }}>{t.patientDashboard.loadingPortal}</div></Container>;
     if (error) return <Container><div style={{ padding: '4rem 0', color: 'red' }}>{error}</div></Container>;
     if (!data) return null;
 
@@ -55,27 +58,27 @@ export default function PatientDashboard() {
                     flexWrap: 'wrap',
                     gap: '0.75rem',
                 }}>
-                    <BackButton label="← Home" href="/" />
+                    <BackButton label={t.common.backHome} href="/" />
                     <div style={{ textAlign: 'right' }}>
                         <div style={{ fontWeight: 'bold', color: 'var(--primary)', fontSize: '0.9rem' }}>
-                            ID: {data.profile.id}
+                            {t.common.id}: {data.profile.id}
                         </div>
                         <div style={{ fontSize: '0.82rem', color: '#888' }}>{data.profile.institution}</div>
                     </div>
                 </div>
 
                 <header style={{ marginBottom: '3rem' }}>
-                    <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Verify ASD Patient Portal</h1>
-                    <p style={{ color: '#666' }}>Secure Dashboard for <strong>{data.profile.name}</strong></p>
+                    <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{t.patientDashboard.portalTitle}</h1>
+                    <p style={{ color: '#666' }}>{t.patientDashboard.dashboardFor} <strong>{data.profile.name}</strong></p>
                 </header>
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
 
                     {/* Screenings */}
                     <div className="card" style={{ background: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-                        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Screening History</h2>
+                        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>{t.patientDashboard.screeningHistory}</h2>
                         {data.screenings.length === 0 ? (
-                            <p style={{ color: '#999', fontStyle: 'italic' }}>No screenings recorded.</p>
+                            <p style={{ color: '#999', fontStyle: 'italic' }}>{t.patientDashboard.noScreenings}</p>
                         ) : (
                             <ul style={{ listStyle: 'none', padding: 0 }}>
                                 {data.screenings.map((s, i) => (
@@ -86,7 +89,7 @@ export default function PatientDashboard() {
                                                 padding: '2px 8px', borderRadius: '12px', fontSize: '0.8rem',
                                                 background: s.risk === 'HIGH' ? '#fee2e2' : '#dcfce7',
                                                 color: s.risk === 'HIGH' ? '#b91c1c' : '#15803d'
-                                            }}>{s.risk} Risk</span>
+                                            }}>{s.risk} {t.patientDashboard.risk}</span>
                                         </div>
                                         <div style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.25rem' }}>
                                             {new Date(s.date).toLocaleDateString()} • {s.status}
@@ -96,46 +99,27 @@ export default function PatientDashboard() {
                             </ul>
                         )}
                         <Link href="/screening" style={{ display: 'block', marginTop: '1rem', textAlign: 'center', color: 'var(--primary)', fontWeight: 500 }}>
-                            Start New Screening →
+                            {t.patientDashboard.startNewScreening}
                         </Link>
                     </div>
 
                     {/* Prescriptions */}
                     <div className="card" style={{ background: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-                        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Prescriptions</h2>
-                        {data.prescriptions.length === 0 ? (
-                            <p style={{ color: '#999', fontStyle: 'italic' }}>No prescriptions available.</p>
-                        ) : (
-                            <ul style={{ listStyle: 'none', padding: 0 }}>
-                                {data.prescriptions.map((p) => (
-                                    <li key={p.id} style={{ marginBottom: '1rem' }}>
-                                        <div style={{ fontWeight: '500' }}>{p.details}</div>
-                                        <div style={{ fontSize: '0.85rem', color: '#666' }}>
-                                            Dr. {p.doctor} • {new Date(p.date).toLocaleDateString()}
-                                        </div>
-                                        {p.downloadUrl && (
-                                            <a href={p.downloadUrl} style={{ fontSize: '0.85rem', color: 'var(--primary)', display: 'inline-block', marginTop: '0.25rem' }}>
-                                                Download PDF
-                                            </a>
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
+                        <PrescriptionSection />
                     </div>
 
                     {/* Therapy */}
                     <div className="card" style={{ background: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-                        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>Therapy Progress</h2>
+                        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', borderBottom: '1px solid #eee', paddingBottom: '0.5rem' }}>{t.patientDashboard.therapyProgress}</h2>
                         {data.therapy.length === 0 ? (
-                            <p style={{ color: '#999', fontStyle: 'italic' }}>No therapy sessions found.</p>
+                            <p style={{ color: '#999', fontStyle: 'italic' }}>{t.patientDashboard.noTherapy}</p>
                         ) : (
                             <ul style={{ listStyle: 'none', padding: 0 }}>
-                                {data.therapy.map((t, i) => (
+                                {data.therapy.map((tItem, i) => (
                                     <li key={i} style={{ marginBottom: '1rem' }}>
-                                        <div style={{ fontWeight: '500' }}>{t.summary}</div>
-                                        {t.progress && <div style={{ fontSize: '0.85rem', color: '#444', marginTop: '2px' }}>Progress: {t.progress}</div>}
-                                        <div style={{ fontSize: '0.8rem', color: '#999' }}>{new Date(t.date).toLocaleDateString()}</div>
+                                        <div style={{ fontWeight: '500' }}>{tItem.summary}</div>
+                                        {tItem.progress && <div style={{ fontSize: '0.85rem', color: '#444', marginTop: '2px' }}>{t.patientDashboard.progressLabel} {tItem.progress}</div>}
+                                        <div style={{ fontSize: '0.8rem', color: '#999' }}>{new Date(tItem.date).toLocaleDateString()}</div>
                                     </li>
                                 ))}
                             </ul>

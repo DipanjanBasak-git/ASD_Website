@@ -4,8 +4,11 @@ import { useState, useEffect } from 'react';
 import styles from './Therapist.module.css';
 import classNames from 'classnames';
 import BackButton from '@/components/ui/BackButton';
+import ProfessionalPrescriptionLookup from '@/components/prescriptions/ProfessionalPrescriptionLookup';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function TherapistDashboard() {
+    const { t } = useLanguage();
     const [patients, setPatients] = useState<any[]>([]);
     const [selectedPatient, setSelectedPatient] = useState<string | null>(null);
     const [notes, setNotes] = useState('');
@@ -24,13 +27,11 @@ export default function TherapistDashboard() {
         if (!selectedPatient) return;
         setIsSaving(true);
         try {
-            // Find active visit or create new one (simplified for dashboard)
-            // In real app, we'd select a specific visit
             const patient = patients.find(p => p.id === selectedPatient);
-            const visitId = patient?.visits?.[0]?.id; // Use latest visit
+            const visitId = patient?.visits?.[0]?.id;
 
             if (!visitId) {
-                alert("No active visit found for this patient. Please ensure they are checked in.");
+                alert(t.therapistDashboard.noActiveVisit);
                 return;
             }
 
@@ -38,18 +39,18 @@ export default function TherapistDashboard() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    userId: 'therapist-01', // Mock
+                    userId: 'therapist-01',
                     patientId: selectedPatient,
-                    visitId: visitId, // Mock
+                    visitId: visitId,
                     notes,
                     progress: "Stable"
                 })
             });
             setNotes('');
-            alert("Therapy notes saved successfully.");
+            alert(t.therapistDashboard.saveSuccess);
         } catch (error) {
             console.error(error);
-            alert("Failed to save notes.");
+            alert(t.therapistDashboard.saveFailed);
         } finally {
             setIsSaving(false);
         }
@@ -60,15 +61,15 @@ export default function TherapistDashboard() {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <BackButton label="← Home" href="/" />
-                <h1 className={styles.title} style={{ marginTop: '0.75rem' }}>Therapy Session Console</h1>
-                <p className={styles.subtitle}>Occupational Therapy & Intervention Log</p>
+                <BackButton label={t.common.backHome} href="/" />
+                <h1 className={styles.title} style={{ marginTop: '0.75rem' }}>{t.therapistDashboard.title}</h1>
+                <p className={styles.subtitle}>{t.therapistDashboard.subtitle}</p>
             </header>
 
             <div className={styles.layout}>
                 <aside className={styles.patientList}>
                     <div className={styles.listHeader}>
-                        My Patients ({patients.length})
+                        {t.therapistDashboard.myPatients} ({patients.length})
                     </div>
                     <div className={styles.listContent}>
                         {patients.map(p => (
@@ -80,7 +81,7 @@ export default function TherapistDashboard() {
                                 onClick={() => setSelectedPatient(p.id)}
                             >
                                 <div className={styles.patientName}>{p.firstName} {p.lastName}</div>
-                                <div className={styles.patientMeta}>ID: {p.patientUniqueId}</div>
+                                <div className={styles.patientMeta}>{t.common.id}: {p.patientUniqueId}</div>
                             </div>
                         ))}
                     </div>
@@ -91,16 +92,16 @@ export default function TherapistDashboard() {
                         <>
                             <div>
                                 <h2 className={styles.workspaceTitle}>
-                                    Session Notes: {activePatientData.firstName} {activePatientData.lastName}
+                                    {t.therapistDashboard.sessionNotes} {activePatientData.firstName} {activePatientData.lastName}
                                 </h2>
                                 <p className="text-sm text-gray-500 mb-4">
-                                    Stage: {activePatientData.pipelineStage}
+                                    {t.therapistDashboard.stage} {activePatientData.pipelineStage}
                                 </p>
                             </div>
 
                             <textarea
                                 className={styles.notesArea}
-                                placeholder="Enter detailed clinical observations, sensory profile updates, and intervention response..."
+                                placeholder={t.therapistDashboard.notesPlaceholder}
                                 value={notes}
                                 onChange={(e) => setNotes(e.target.value)}
                             />
@@ -110,15 +111,20 @@ export default function TherapistDashboard() {
                                 onClick={handleSave}
                                 disabled={isSaving}
                             >
-                                {isSaving ? 'Saving Encrypted Log...' : 'Sign & Save Record'}
+                                {isSaving ? t.therapistDashboard.savingBtn : t.therapistDashboard.saveBtn}
                             </button>
                         </>
                     ) : (
                         <div className={styles.emptyState}>
-                            Select a patient from the list to begin charting.
+                            {t.therapistDashboard.emptyState}
                         </div>
                     )}
                 </main>
+            </div>
+
+            {/* ── Prescription Lookup ── */}
+            <div style={{ padding: '0 2rem 2rem' }}>
+                <ProfessionalPrescriptionLookup title={t.therapistDashboard.rxRecordsTitle} />
             </div>
         </div>
     );

@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import styles from './Doctor.module.css';
 import classNames from 'classnames';
 import BackButton from '@/components/ui/BackButton';
+import ProfessionalPrescriptionLookup from '@/components/prescriptions/ProfessionalPrescriptionLookup';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface Patient {
     id: string;
@@ -15,6 +17,7 @@ interface Patient {
 }
 
 export default function DoctorDashboard() {
+    const { t } = useLanguage();
     const [patients, setPatients] = useState<Patient[]>([]);
     const [stats, setStats] = useState({ highRisk: 0, pending: 0 });
 
@@ -42,14 +45,14 @@ export default function DoctorDashboard() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <div>
-                    <BackButton label="← Home" href="/" />
-                    <h1 className={styles.title} style={{ marginTop: '0.75rem' }}>Clinical Review Dashboard</h1>
+                    <BackButton label={t.common.backHome} href="/" />
+                    <h1 className={styles.title} style={{ marginTop: '0.75rem' }}>{t.doctorDashboard.title}</h1>
                     <p className={styles.subtitle}>
-                        Pending Review: <strong>{stats.pending}</strong> | High Risk Alerts: <strong className="text-red-600">{stats.highRisk}</strong>
+                        {t.doctorDashboard.pendingReview} <strong>{stats.pending}</strong> | {t.doctorDashboard.highRiskAlerts} <strong className="text-red-600">{stats.highRisk}</strong>
                     </p>
                 </div>
                 <div className={styles.actions}>
-                    <button className={styles.refreshBtn} onClick={() => window.location.reload()}>Refresh List</button>
+                    <button className={styles.refreshBtn} onClick={() => window.location.reload()}>{t.doctorDashboard.refreshList}</button>
                 </div>
             </header>
 
@@ -63,15 +66,15 @@ export default function DoctorDashboard() {
                                 <div className={styles.idBadge}>{patient.patientUniqueId}</div>
                             </div>
                             <div className={styles.cardBody}>
-                                <div>Status: <span className="font-medium">{patient.pipelineStage}</span></div>
+                                <div>{t.doctorDashboard.status} <span className="font-medium">{patient.pipelineStage}</span></div>
 
                                 {isHighRisk ? (
                                     <div className={classNames(styles.riskTag, styles.ItemHigh)}>
-                                        ⚠️ H-RISK DETECTED
+                                        {t.doctorDashboard.highRiskDetected}
                                     </div>
                                 ) : (
                                     <div className={classNames(styles.riskTag, styles.ItemLow)}>
-                                        Stable / No Flags
+                                        {t.doctorDashboard.stableNoFlags}
                                     </div>
                                 )}
                             </div>
@@ -81,9 +84,14 @@ export default function DoctorDashboard() {
 
                 {patients.length === 0 && (
                     <div className="col-span-full text-center py-12 text-gray-500">
-                        No patients assigned to your review queue.
+                        {t.doctorDashboard.noPatients}
                     </div>
                 )}
+            </div>
+
+            {/* ── Prescription Lookup ── */}
+            <div style={{ padding: '0 2rem 2rem' }}>
+                <ProfessionalPrescriptionLookup title={t.doctorDashboard.rxRecordsTitle} />
             </div>
         </div>
     );

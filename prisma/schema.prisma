@@ -44,10 +44,12 @@ model User {
   institution   Institution? @relation(fields: [institutionId], references: [id])
 
   // Relations
-  guardianPatients   Patient[]   @relation("GuardianPatients") 
-  conductedScreenings Screening[] @relation("Evaluator")
-  uploadedMedia      ClinicalMedia[] @relation("Uploader")
-  auditLogs          AuditLog[]
+  guardianPatients             Patient[]   @relation("GuardianPatients")
+  conductedScreenings          Screening[] @relation("Evaluator")
+  uploadedMedia                ClinicalMedia[] @relation("Uploader")
+  auditLogs                    AuditLog[]
+  prescriptionAccessGrants     PrescriptionAccessGrant[] @relation("PrescriptionAccessGrants")
+  patientAccessGrants          PatientAccessGrant[] @relation("PatientAccessGrants")
 
   // Status
   isActive      Boolean   @default(true)
@@ -132,6 +134,7 @@ model Patient {
   consents        Consent[]
   therapies       TherapyRecord[]
   prescriptions   Prescription[]
+  patientAccessGrants PatientAccessGrant[]
 
   // Meta
   createdAt       DateTime @default(now())
@@ -162,6 +165,7 @@ model Screening {
   calculatedScore Int
   riskLevel       String   // LOW, MEDIUM, HIGH
   reviewStatus    String   @default("PENDING") // PENDING, REVIEWED, APPROVED
+  facialImagePath String?  // Stored under uploads/screenings/
   
   evaluatorId     String
   evaluator       User     @relation("Evaluator", fields: [evaluatorId], references: [id])
@@ -228,17 +232,74 @@ model TherapyRecord {
 }
 
 model Prescription {
-  id          String   @id @default(uuid())
-  patientId   String
-  patient     Patient  @relation(fields: [patientId], references: [id])
-  
-  details     String?
-  fileUrl     String?  // Secure Path
-  
-  prescribedBy String
-  validUntil   DateTime?
-  
-  createdAt   DateTime @default(now())
+  id               String    @id @default(uuid())
+  patientId        String
+  patient          Patient   @relation(fields: [patientId], references: [id])
+
+  // Original file — stored outside /public, served via authenticated API
+  originalFilePath String?   // Relative path under uploads/prescriptions/
+  originalFileName String?   // Human-readable filename for display
+  fileMimeType     String?   // image/jpeg, image/png
+
+  // AI Processing
+  processingStatus String    @default("PENDING") // PENDING, PROCESSING, PROCESSED, FAILED
+  aiExtractedData  Json?     // Structured: { patientName, date, doctorName, medicines[], notes, ... }
+  aiProcessedAt    DateTime?
+  aiFailureReason  String?
+
+  // Legacy fields kept for backward compatibility
+  details          String?
+  prescribedBy     String?
+  validUntil       DateTime?
+
+  // Access control
+  accessGrants     PrescriptionAccessGrant[]
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([patientId])
+  @@index([processingStatus])
+}
+
+// -----------------------------------------------------------------------------
+// PRESCRIPTION DIGITALIZATION
+// -----------------------------------------------------------------------------
+
+model PrescriptionAccessGrant {
+  id             String       @id @default(uuid())
+  prescriptionId String
+  prescription   Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+
+  // The professional (Doctor, Therapist, Counsellor) granted access
+  professionalId String
+  professional   User         @relation("PrescriptionAccessGrants", fields: [professionalId], references: [id])
+
+  isActive       Boolean      @default(true)
+  grantedAt      DateTime     @default(now())
+  revokedAt      DateTime?
+
+  @@unique([prescriptionId, professionalId])
+  @@index([professionalId])
+  @@index([prescriptionId])
+}
+
+model PatientAccessGrant {
+  id             String    @id @default(uuid())
+  patientId      String
+  patient        Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  // The professional (Doctor, Therapist, Counsellor) granted access
+  professionalId String
+  professional   User      @relation("PatientAccessGrants", fields: [professionalId], references: [id])
+
+  isActive       Boolean   @default(true)
+  grantedAt      DateTime  @default(now())
+  revokedAt      DateTime?
+
+  @@unique([patientId, professionalId])
+  @@index([professionalId])
+  @@index([patientId])
 }
 
 // -----------------------------------------------------------------------------

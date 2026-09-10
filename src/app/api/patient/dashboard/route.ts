@@ -34,7 +34,11 @@ export async function GET(req: NextRequest) {
                     select: {
                         id: true,
                         details: true,
-                        fileUrl: true,
+                        originalFileName: true,
+                        fileMimeType: true,
+                        processingStatus: true,
+                        aiExtractedData: true,
+                        aiProcessedAt: true,
                         prescribedBy: true,
                         createdAt: true
                     },
@@ -75,7 +79,8 @@ export async function GET(req: NextRequest) {
                 date: p.createdAt,
                 details: p.details || "Prescription",
                 doctor: p.prescribedBy,
-                downloadUrl: p.fileUrl ? `/api/download/${p.fileUrl}` : null
+                processingStatus: p.processingStatus,
+                downloadUrl: null // Files now served via /api/prescriptions/[id]/file
             })),
             therapy: patient.therapies.map(t => ({
                 date: t.createdAt,

@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
         '/',
         '/about',
         '/research'
-    ].some(p => path === p || path.startsWith(p + '/'));
+    ].some(p => path === p || path.startsWith(p + '/')) || /\.(mp4|webm|svg|png|jpg|jpeg|gif|ico|webp)$/i.test(path);
 
     const sessionCookie = request.cookies.get('session')?.value;
     const session = sessionCookie ? await decryptSession(sessionCookie) : null;
@@ -45,5 +45,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+    matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp4|webm|ico|txt)$).*)'],
 };

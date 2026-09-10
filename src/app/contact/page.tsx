@@ -2,32 +2,35 @@
 
 import Container from '@/components/ui/Container';
 import styles from '../privacy/privacy.module.css';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function ContactPage() {
+    const { t } = useLanguage();
+
     return (
         <div className={styles.container}>
             <Container>
                 <div className={styles.content}>
-                    <h1 className={styles.title}>Contact Research Team</h1>
-                    <p className={styles.updated}>We're here to help</p>
+                    <h1 className={styles.title}>{t.contactPage.title}</h1>
+                    <p className={styles.updated}>{t.contactPage.subtitle}</p>
 
                     <section className={styles.section}>
-                        <h2>Get in Touch</h2>
+                        <h2>{t.contactPage.getInTouch}</h2>
                         <p>
-                            For research inquiries, technical support, or general questions about the SMART-ASD Platform:
+                            {t.contactPage.inquiriesText}
                         </p>
                         <p>
-                            <strong>Email:</strong> smartasdplatform@gmail.com
+                            <strong>{t.contactPage.emailLabel}</strong> smartasdplatform@gmail.com
                         </p>
                         <p className={styles.note}>
-                            We typically respond within 24-48 hours during business days.
+                            {t.contactPage.responseNotice}
                         </p>
                     </section>
 
                     <section className={styles.section}>
-                        <h2>About This Platform</h2>
+                        <h2>{t.contactPage.aboutPlatformTitle}</h2>
                         <p>
-                            The SMART-ASD Platform is a research initiative focused on supporting early understanding of autism spectrum disorders through structured behavioral observation and responsible AI technology.
+                            {t.contactPage.aboutPlatformText}
                         </p>
                     </section>
                 </div>
